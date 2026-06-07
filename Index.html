@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HealthFine AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="brand">
+  <img src="logo.png" alt="HealthFine AI Logo" class="logo">
+  <h1>HealthFine AI</h1>
+</div>
+<p class="tagline">Smart Health Risk Analysis & Personalized Care</p>
+
+    <div class="nav">
+        <button class="nav-btn active" onclick="showSection('home', this)">Home</button>
+        <button class="nav-btn" onclick="showSection('calculator', this)">Risk Calculator</button>
+        <button class="nav-btn" onclick="showSection('quiz', this)">Quiz</button>
+        <button class="nav-btn" onclick="showSection('bmi', this)">BMI</button>
+        <button class="nav-btn" onclick="showSection('water', this)">Water</button>
+        <button class="nav-btn" onclick="showSection('about', this)">About</button>
+        <button class="nav-btn" onclick="showSection('articles', this)">Articles</button>
+        <button class="nav-btn" onclick="showSection('feedback', this)">Feedback</button>
+
+        <div class="theme-switch-wrap">
+            <label class="theme-switch">
+                <input type="checkbox" id="themeToggle" onchange="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="content">
+
+            <!-- HOME -->
+            <div id="home">
+                <h2>Welcome to HealthFine AI</h2>
+                <p class="home-text">
+                    HealthFine AI is a smart healthcare website that helps users explore
+                    common lifestyle diseases, understand symptoms, and get simple
+                    risk analysis with personalized wellness tips.
+                </p>
+
+                <div class="home-box">
+                    <h3>What this website does</h3>
+                    <ul>
+                        <li>Provides information about common lifestyle diseases</li>
+                        <li>Lets users select symptoms and analyze possible risk</li>
+                        <li>Shows personalized precautions and smart health tips</li>
+                        <li>Includes a quick lifestyle risk quiz</li>
+                        <li>Includes a BMI calculator for health awareness</li>
+                        <li>Includes a water intake tracker</li>
+                    </ul>
+
+                    <div class="tip-box">
+                        <h3> Daily Health Tip</h3>
+                        <p id="dailyTip">Drink enough water and stay active every day.</p>
+                        <button class="main-btn tip-btn" onclick="nextTip()">Next Tip</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RISK CALCULATOR -->
+            <div id="calculator" class="hidden">
+                <div class="calc-layout">
+
+                    <div class="calc-sidebar">
+                        <h3>Diseases</h3>
+                        <button class="toggle-btn" onclick="toggleDiseaseList()">Show / Hide Diseases</button>
+
+                        <div id="diseaseList" class="hidden">
+                            <div class="card" onclick="selectDisease('asthma', this)">Asthma</div>
+                            <div class="card" onclick="selectDisease('cancer', this)">Cancer</div>
+                            <div class="card" onclick="selectDisease('depression', this)">Depression</div>
+                            <div class="card" onclick="selectDisease('diabetes', this)">Diabetes</div>
+                            <div class="card" onclick="selectDisease('heart_disease', this)">Heart Disease</div>
+                            <div class="card" onclick="selectDisease('hypertension', this)">Hypertension</div>
+                            <div class="card" onclick="selectDisease('obesity', this)">Obesity</div>
+                            <div class="card" onclick="selectDisease('pcos', this)">PCOS</div>
+                            <div class="card" onclick="selectDisease('stroke', this)">Stroke</div>
+                            <div class="card" onclick="selectDisease('thyroid', this)">Thyroid</div>
+                        </div>
+                    </div>
+
+                    <div class="calc-content">
+                        <h2 id="name">Risk Calculator</h2>
+                        <p id="desc" class="desc-text">Select a disease from the left panel to begin.</p>
+
+                        <div class="info-box">
+                            <div class="detail-item">
+                                <span class="detail-title">Causes</span>
+                                <span id="cause" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">Risk Groups</span>
+                                <span id="riskGroup" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">Warning Signs</span>
+                                <span id="warningSigns" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">Prevention</span>
+                                <span id="prevention" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">Public Health Note</span>
+                                <span id="caseInfo" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">WHO / Global Reference</span>
+                                <span id="whoStat" class="detail-text">---</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="detail-title">Reference Year</span>
+                                <span id="whoYear" class="detail-text">---</span>
+                            </div>
+                        </div>
+
+                        <p class="disclaimer">
+                            <b>Source note:</b> Global figures are based on WHO fact sheets and WHO public health updates.
+                        </p>
+
+                        <h3 class="section-title">Select Symptoms</h3>
+                        <div id="symptoms" class="symptoms-box"></div>
+
+                        <button class="main-btn" onclick="showResult()">Analyze Risk</button>
+
+                        <div id="resultBox" class="result-box hidden">
+                            <h3>Risk Analysis Result</h3>
+                            <h2 id="result"></h2>
+                            <p id="percentText"></p>
+
+                            <div class="bar-wrap">
+                                <div id="bar" class="bar"></div>
+                            </div>
+
+                            <p id="why"></p>
+                            <p id="precaution"></p>
+
+                            <div class="result-actions">
+                                <button onclick="scrollToTips()">View Tips</button>
+                                <button onclick="resetCalculator()">Try Again</button>
+                            </div>
+                        </div>
+
+                        <div id="tips" class="tips-box hidden">
+                            <h3>💡 Personalized Tips</h3>
+                            <ul id="tipsList"></ul>
+                            <p class="disclaimer">
+                                <b>Disclaimer:</b> This website is for educational purposes only and does not provide a medical diagnosis.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- QUIZ -->
+            <div id="quiz" class="hidden">
+                <h2>Lifestyle Risk Quiz</h2>
+                <p class="home-text">Answer these questions to check your lifestyle risk level.</p>
+
+                <div class="quiz-box">
+                    <p>1. Do you exercise less than 3 times a week?</p>
+                    <label><input type="radio" name="q1" value="1"> Yes</label>
+                    <label><input type="radio" name="q1" value="0"> No</label>
+
+                    <p>2. Do you eat junk food frequently?</p>
+                    <label><input type="radio" name="q2" value="1"> Yes</label>
+                    <label><input type="radio" name="q2" value="0"> No</label>
+
+                    <p>3. Do you sleep less than 7 hours daily?</p>
+                    <label><input type="radio" name="q3" value="1"> Yes</label>
+                    <label><input type="radio" name="q3" value="0"> No</label>
+
+                    <p>4. Do you often feel stressed?</p>
+                    <label><input type="radio" name="q4" value="1"> Yes</label>
+                    <label><input type="radio" name="q4" value="0"> No</label>
+
+                    <p>5. Do you drink less water daily?</p>
+                    <label><input type="radio" name="q5" value="1"> Yes</label>
+                    <label><input type="radio" name="q5" value="0"> No</label>
+
+                    <p>6. Do you smoke regularly?</p>
+                    <label><input type="radio" name="q6" value="1"> Yes</label>
+                    <label><input type="radio" name="q6" value="0"> No</label>
+
+                    <button class="main-btn" onclick="checkQuiz()">Submit Quiz</button>
+
+                    <div id="quizResult" class="result-box hidden">
+                        <h3 id="quizScore"></h3>
+                        <p id="quizAdvice"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BMI -->
+            <div id="bmi" class="hidden">
+                <h2>BMI Calculator</h2>
+                <p class="home-text">Check your Body Mass Index and health category.</p>
+
+                <div class="quiz-box">
+                    <label>Height (cm)</label><br>
+                    <input type="number" id="height" placeholder="Enter height" class="input-box"><br><br>
+
+                    <label>Weight (kg)</label><br>
+                    <input type="number" id="weight" placeholder="Enter weight" class="input-box"><br><br>
+
+                    <button class="main-btn" onclick="calculateBMI()">Calculate BMI</button>
+
+                    <div id="bmiResult" class="result-box hidden">
+                        <h3 id="bmiValue"></h3>
+                        <p id="bmiCategory"></p>
+                        <p id="bmiAdvice"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WATER -->
+            <div id="water" class="hidden">
+                <h2>Water Intake Tracker 💧</h2>
+                <p class="home-text">Track your daily hydration level.</p>
+
+                <div class="quiz-box">
+                    <label>Glasses of water per day</label><br>
+                    <input type="number" id="waterInput" placeholder="Enter number (e.g. 6)" class="input-box"><br><br>
+
+                    <button class="main-btn" onclick="checkWater()">Check Hydration</button>
+
+                    <div id="waterResult" class="result-box hidden">
+                        <h3 id="waterLevel"></h3>
+                        <p id="waterAdvice"></p>
+
+                        <div class="water-progress-box">
+                            <h3>Daily Water Progress</h3>
+                            <div class="water-bar-wrap">
+                                <div id="waterBar" class="water-bar"></div>
+                            </div>
+                            <p id="waterProgressText">0 / 8 glasses completed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT -->
+            <div id="about" class="hidden">
+                <h2>About the Project</h2>
+                <p class="home-text">
+                    HealthFine AI is a college project designed to spread awareness about
+                    lifestyle diseases and preventive healthcare through a simple,
+                    interactive dashboard.
+                </p>
+
+                <div class="home-box">
+                    <h3>Project Objectives</h3>
+                    <ul>
+                        <li>Increase awareness about lifestyle diseases</li>
+                        <li>Promote preventive healthcare habits</li>
+                        <li>Provide a simple symptom checker</li>
+                        <li>Encourage healthier daily choices</li>
+                    </ul>
+                    <p class="about-credit">
+    Built with collaboration and care by<br>
+    Samiksha Patel & Priyanshu Nishad
+</p>
+                </div>
+
+                
+            </div>
+
+<!-- ARTICLES -->
+<div id="articles" class="hidden">
+    <h2>Health Articles & Research</h2>
+    <p class="home-text">
+        Explore trusted WHO health articles and public health references for major lifestyle and related diseases.
+    </p>
+
+    <div class="articles-grid">
+
+        <div class="article-card">
+            <h3>Asthma Awareness</h3>
+            <p>Learn about asthma, breathing problems, triggers, and prevention.</p>
+            <button class="main-btn" onclick="toggleArticle('article1', this)">Read More</button>
+            <div id="article1" class="article-more hidden">
+                <p><b>Overview:</b> Asthma is a chronic disease that affects the airways in the lungs.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/asthma" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Cancer Awareness</h3>
+            <p>Learn about cancer, risk factors, prevention, and global burden.</p>
+            <button class="main-btn" onclick="toggleArticle('article2', this)">Read More</button>
+            <div id="article2" class="article-more hidden">
+                <p><b>Overview:</b> Cancer is a large group of diseases that can start in almost any organ or tissue of the body.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/cancer" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Depression Awareness</h3>
+            <p>Learn about depression, symptoms, support, and treatment options.</p>
+            <button class="main-btn" onclick="toggleArticle('article3', this)">Read More</button>
+            <div id="article3" class="article-more hidden">
+                <p><b>Overview:</b> Depression is a common mental health condition that affects how a person feels, thinks, and functions.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/depression" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Diabetes Awareness</h3>
+            <p>Learn about diabetes, symptoms, prevention, and global impact.</p>
+            <button class="main-btn" onclick="toggleArticle('article4', this)">Read More</button>
+            <div id="article4" class="article-more hidden">
+                <p><b>Overview:</b> Diabetes is a chronic disease that affects how the body uses blood sugar.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Heart Disease Awareness</h3>
+            <p>Learn about cardiovascular disease, heart risks, and prevention.</p>
+            <button class="main-btn" onclick="toggleArticle('article5', this)">Read More</button>
+            <div id="article5" class="article-more hidden">
+                <p><b>Overview:</b> Cardiovascular diseases are the leading cause of death globally.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/health-topics/cardiovascular-diseases" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Hypertension Awareness</h3>
+            <p>Learn about high blood pressure, risks, prevention, and treatment.</p>
+            <button class="main-btn" onclick="toggleArticle('article6', this)">Read More</button>
+            <div id="article6" class="article-more hidden">
+                <p><b>Overview:</b> Hypertension is a major risk factor for heart, brain, and kidney disease.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/hypertension" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Obesity Awareness</h3>
+            <p>Learn about obesity, its causes, prevention, and health effects.</p>
+            <button class="main-btn" onclick="toggleArticle('article7', this)">Read More</button>
+            <div id="article7" class="article-more hidden">
+                <p><b>Overview:</b> Obesity is abnormal or excessive fat accumulation that may impair health.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>PCOS Awareness</h3>
+            <p>Learn about polycystic ovary syndrome, symptoms, and women’s health impact.</p>
+            <button class="main-btn" onclick="toggleArticle('article8', this)">Read More</button>
+            <div id="article8" class="article-more hidden">
+                <p><b>Overview:</b> PCOS is a hormonal condition that can affect menstrual cycles, fertility, and metabolism.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/polycystic-ovary-syndrome" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Stroke Awareness</h3>
+            <p>Learn about stroke, emergency signs, risk factors, and prevention.</p>
+            <button class="main-btn" onclick="toggleArticle('article9', this)">Read More</button>
+            <div id="article9" class="article-more hidden">
+                <p><b>Overview:</b> Stroke happens when blood flow to the brain is interrupted or reduced.</p>
+                <p><b>Source:</b> WHO</p>
+                <a href="https://www.who.int/health-topics/cerebrovascular-accident-stroke" target="_blank" class="article-btn">Open WHO Article</a>
+            </div>
+        </div>
+
+        <div class="article-card">
+            <h3>Thyroid Awareness</h3>
+            <p>Learn about thyroid problems, hormone balance, and health effects.</p>
+            <button class="main-btn" onclick="toggleArticle('article10', this)">Read More</button>
+            <div id="article10" class="article-more hidden">
+                <p><b>Overview:</b> Thyroid disorders affect metabolism, energy, growth, and hormonal balance.</p>
+                <p><b>Source:</b> WHO / Public health reference</p>
+                <a href="https://www.who.int/health-topics" target="_blank" class="article-btn">Open WHO Health Topics</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="feedback" class="hidden">
+    <h2>User Feedback</h2>
+    <p class="home-text">✨ A little feedback today keeps bad design away..</p>
+
+    <div class="quiz-box">
+        <label>Name</label><br>
+        <input type="text" id="feedbackName" placeholder="Enter your name" class="input-box"><br><br>
+
+        <label>Email (optional)</label><br>
+        <input type="email" id="feedbackEmail" placeholder="Enter your email" class="input-box"><br><br>
+
+        <label>Rating</label><br>
+        <select id="feedbackRating" class="input-box">
+            <option value="">Select rating</option>
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Average</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Very Poor</option>
+        </select><br><br>
+
+        <label>Your Feedback</label><br>
+        <textarea id="feedbackMessage" placeholder="Write your feedback here..." class="input-box" rows="5"></textarea><br><br>
+
+        <button class="main-btn" onclick="submitFeedback()">Submit Feedback</button>
+
+        <div id="feedbackResult" class="result-box hidden">
+            <h3>Thank you for your feedback!</h3>
+            <p>Your feedback is like a health check-up for this website — don’t hold back </p>
+        </div>
+    </div>
+</div>
+    <script src="script.js"></script>
+
+</div>
+</div>
+</body>
+</html>
